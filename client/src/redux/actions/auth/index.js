@@ -1,6 +1,22 @@
 import { toast } from "react-hot-toast";
 import axios from "../../../utils/axios";
-import { useNavigate } from "react-router";
+export const registerUser = (user) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post("/auth/signup", user);
+      const responseData = response.data;
+      dispatch({
+        type: "REGISTER_USER",
+        payload: responseData,
+      });
+      toast.success("User Registered successful");
+    } catch (error) {
+      toast.error(error.response.data.message);
+      console.log(error);
+    }
+  };
+};
+
 export const loginUser = (user) => {
   return async (dispatch) => {
     try {

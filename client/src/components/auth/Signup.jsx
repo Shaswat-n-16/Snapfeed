@@ -1,36 +1,22 @@
 import React from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { registerUser } from "../../redux/actions/auth";
+
 import withAuth from "../../hoc/withAuth";
 import axios from "axios";
-import toast from "react-hot-toast";
 import logo from "./snapfeed-logo.png";
 const Signup = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [firstName, setFirstname] = React.useState("");
   const [lastName, setLastname] = React.useState("");
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      // console.log({
-      //   email,
-      //   password,
-      //   firstName,
-      //   lastName,
-      // });
-      const response = await axios.post("http://localhost:8080/auth/signup", {
-        email,
-        password,
-        firstName,
-        lastName,
-      });
-      if (response.data) {
-        console.log(response.data);
-        toast.success("User Registered Sucessfully!");
-        navigate("/login");
-      }
+      dispatch(registerUser({ email, password, firstName, lastName }));
     } catch (error) {
       console.log(error);
     }
